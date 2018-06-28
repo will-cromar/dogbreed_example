@@ -1,0 +1,100 @@
+<head>
+    <style>
+    html, body, .page {
+        min-height: 100%;
+    }
+
+    .page {
+        width: 600px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+
+        font-family: sans-serif;
+    }
+
+    .image {
+        max-width: 90%;
+        margin: 0 auto;
+    }
+
+    img {
+        width: 100%;
+        height: auto;
+    }
+
+    form {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin: 16px 0;
+    }
+
+    .scores {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .scores h4 {
+        display: inline;
+    }
+
+    .score {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin: 1px 0;
+    }
+
+    footer {
+        display: flex;
+        margin-top: auto;
+    }
+
+    </style>
+
+</head>
+<body>
+    <div class="page">
+    <h1>Dog Breed Identifier</h1>
+    {{ if .ImageB64 }}
+    <div class="image">
+        <img src="data:image/{{ .ImageType }};base64, {{ .ImageB64 }}" alt="Your Uploaded Image" />
+    </div>
+    {{ else }}
+    <div class="greeting">
+        Use machine learning to identify your dog! Upload an image below.
+    </div>
+    {{ end }}
+    <form action="/classify" method="post" enctype="multipart/form-data">
+        <input type="file" name="image" size="chars" />
+        <input type="submit" />
+    </form>
+    {{ if .Scores }}
+    <div class="scorestitle">
+        <h3>Our best guess is that your dog is a...</h3>
+    </div>
+    <div class="scores">
+        <div class="score">
+            <div>
+                <h4>Breed</h4>
+            </div>
+            <div>
+                <h4>Confidence (out of 1)</h4>
+            </div>
+        </div>
+        {{ range .Scores }}
+        <div class="score">
+            <div class="label">
+                {{ .Label }}
+            </div>
+            <div class="score" >
+                {{ .Score }}
+            </div>
+        </div>
+        {{ end }}
+    </div>
+    {{ end }}
+    <footer>Created by Will Cromar</footer>
+    </div>
+</body>
